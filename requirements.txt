@@ -1,0 +1,11 @@
+numpy
+requests==2.26.0
+git+https://github.com/openai/CLIP.git
+matplotlib
+Pillow
+opencv-python
+pyaml
+jupyter
+pyproject
+PySide6
+onnxruntime
