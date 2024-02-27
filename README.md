@@ -13,3 +13,9 @@ conda activate PPMS
 ```
 pip install -r requirements.txt
 ```
+4. Open the APP
+```
+python main.py
+```
+
+![alt text](images/image.png)
