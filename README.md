@@ -1,6 +1,6 @@
 # Public-Place-Monitoring-System
 
-## How Tu Run
+## How to run
 1. Create a conda Env:
 ```
 conda create -n PPMS python=3.11 --yes
