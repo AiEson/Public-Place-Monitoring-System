@@ -1,5 +1,5 @@
 model-settings:
-  prediction-threshold: 0.23  # max value of cosine similarity can be 1
+  prediction-threshold: 0.25  # max value of cosine similarity can be 1
   model-name: 'ViT-B/32'
   device: 'cpu'
 label-settings:

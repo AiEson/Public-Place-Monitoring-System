@@ -19,6 +19,7 @@ from widgets import *  # noqa
 import config_values as cfg  # noqa
 from fall_infer_utils import get_fall_down_result, draw
 from fight_infer_utils import get_fight_img
+from smoke_infer_utils import get_is_smoke_img
 
 global widgets
 
@@ -33,6 +34,8 @@ class Identify(QObject):
         self.win = win
         self.isEnd = False
         self.in_dim_stack = deque(maxlen=30)
+        
+        self.smoke_num = 0
 
     def start(self):
         if not hasattr(self, "cap") or not self.cap.isOpened():
@@ -62,6 +65,7 @@ class Identify(QObject):
 
             success, image = self.cap.read()  # 获取摄像头输出
             success, image = self.cap.read()  # 获取摄像头输出
+            
             if not success:
                 break
             size = (
@@ -72,6 +76,7 @@ class Identify(QObject):
             cfg.hCam = size[1] // 1.5
             image = cv2.resize(image, size)
             label_title = get_fight_img(image)
+            is_smoke = get_is_smoke_img(image, conf=0.85)
 
             fall_down_ret = get_fall_down_result(image)
             fall_down_bbox_results = fall_down_ret[-1]
@@ -81,8 +86,19 @@ class Identify(QObject):
 
             image = draw(*fall_down_ret)
 
-            self.win.ui.label_res.setText(cfg.TITLE_MAP[label_title.lower()])
-
+            
+            if is_smoke:
+                self.smoke_num += 2 if self.smoke_num < 10 else 0
+            
+            if self.smoke_num > 3:
+                self.win.ui.label_res.setText("有人在吸烟！")
+                self.smoke_num -= 1
+            else:
+                self.win.ui.label_res.setText(cfg.TITLE_MAP[label_title.lower()])
+                self.smoke_num -= 1 if self.smoke_num > 0 else 0
+                
+            print(self.smoke_num)
+            
             if self.win.eventRunning.isSet():
                 self.win.flash_img(image)
 

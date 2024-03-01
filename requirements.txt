@@ -9,3 +9,4 @@ jupyter
 pyproject
 PySide6
 onnxruntime
+ultralytics
